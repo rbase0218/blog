@@ -7,7 +7,7 @@ import Layout from '@layouts/layout.astro'
 import { getTags } from '@utils'
 import { getCollection } from 'astro:content'
 
-const entries = await getCollection('blog')
+const entries = [...(await getCollection('blog')), ...(await getCollection('note'))]
 
 const tags = getTags(entries)
 ---

@@ -1,8 +1,13 @@
 ---
 import Layout from '@layouts/layout.astro'
 import Seo from '@components/seo.astro'
+import { getCollection } from 'astro:content'
 import SkipNavContent from '@components/a11y/skip-nav-content.astro'
+import { sortAsc } from '@utils'
+import PostList from '@components/post-list.astro'
 import Prose from '@components/prose.astro'
+
+const posts = sortAsc(await getCollection('note'))
 ---
 
 <Layout>
@@ -10,7 +15,7 @@ import Prose from '@components/prose.astro'
 	<SkipNavContent>
 		<Prose>
 			<h1 class="mb-8!">note</h1>
-			<p>아직 작성된 노트가 없습니다.</p>
 		</Prose>
+		<PostList posts={posts} />
 	</SkipNavContent>
 </Layout>

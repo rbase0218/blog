@@ -4,6 +4,11 @@ import Link from './link.astro'
 import Search from './search.astro'
 import ThemeToggle from './theme-toggle.astro'
 
+interface Props {
+	activeCategory?: 'blog' | 'note'
+}
+
+const { activeCategory } = Astro.props
 const { pathname } = Astro.url
 ---
 
@@ -14,7 +19,11 @@ const { pathname } = Astro.url
 	<nav aria-label="주 메뉴" class="flex shrink-0 gap-4 text-base md:text-xl">
 		{
 			HEADER.internal.map((link) => (
-				<Link href={link.url} class="category-link" aria-current={pathname === link.url ? 'page' : undefined}>
+				<Link
+					href={link.url}
+					class="category-link"
+					aria-current={pathname === link.url || activeCategory === link.title ? 'page' : undefined}
+				>
 					{link.title}
 				</Link>
 			))

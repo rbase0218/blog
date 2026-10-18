@@ -14,7 +14,7 @@ import { getCollection } from 'astro:content'
  * 2. Each tag page will have a list of entries associated with that tag.
  */
 export async function getStaticPaths() {
-	const entries = await getCollection('blog')
+	const entries = [...(await getCollection('blog')), ...(await getCollection('note'))]
 
 	let result = []
 

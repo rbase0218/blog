@@ -1,5 +1,5 @@
 ---
-import { getCollection, render } from 'astro:content'
+import { type CollectionEntry, render } from 'astro:content'
 import Seo from '@components/seo.astro'
 import Layout from '@layouts/layout.astro'
 import Prose from '@components/prose.astro'
@@ -12,17 +12,8 @@ import TagLinks from '@components/tag-links.astro'
 import Playground from '@components/playground.astro'
 import ReadingProgress from '@components/reading-progress.astro'
 
-export async function getStaticPaths() {
-	const entries = await getCollection('blog')
-
-	return entries.map((e) => ({
-		params: {
-			blog: e.data.slug,
-		},
-		props: {
-			entry: e,
-		},
-	}))
+interface Props {
+	entry: CollectionEntry<'blog' | 'note'>
 }
 
 const { entry } = Astro.props
@@ -36,7 +27,7 @@ const publishedDate = post.date.toLocaleDateString('ko-KR', {
 const { Content } = await render(entry)
 ---
 
-<Layout>
+<Layout activeCategory={entry.collection}>
 	<ReadingProgress />
 	<Seo slot="seo" forceTitle={post.title} description={post.description} image={post.image}>
 		<meta name="twitter:label1" value="작성자" />

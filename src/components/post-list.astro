@@ -1,0 +1,31 @@
+---
+import type { CollectionEntry } from 'astro:content'
+import { defaultDateFormat } from '@utils'
+import Spacer from './spacer.astro'
+import Link from './link.astro'
+import TagLinks from './tag-links.astro'
+
+interface Props {
+	posts: Array<CollectionEntry<'blog' | 'note'>>
+}
+const { posts } = Astro.props
+---
+
+<div class="flex gap-10 flex-col">
+	{
+		posts.map(({ data: post }) => (
+			<div>
+				<Link variant="highlight" class="font-medium" href={`/${post.slug}/`}>
+					{post.title}
+				</Link>
+				<Spacer axis="vertical" size={2} />
+				<div class="flex flex-wrap items-center gap-x-3 gap-y-2 text-faded">
+					<span>{defaultDateFormat(post.date)}</span>
+					<TagLinks tags={post.tags} />
+				</div>
+				<Spacer axis="vertical" size={4} />
+				<div class="text-subtle text-md md:text-lg">{post.description}</div>
+			</div>
+		))
+	}
+</div>

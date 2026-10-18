@@ -50,23 +50,23 @@ export function frontmatterToString(data: Record<string, any>): string {
 }
 
 /**
- * Sort the 'blog' collection ASC by date
+ * Sort posts by date, newest first
  */
-export function sortAsc(data: Array<CollectionEntry<'blog'>>) {
+export function sortAsc<T extends CollectionEntry<'blog' | 'note'>>(data: T[]) {
 	return data.sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime())
 }
 
 /**
  * Get all posts tagged with the given tag
  */
-export function getPostsByTag(data: Array<CollectionEntry<'blog'>>, tag: FrontmatterTag) {
+export function getPostsByTag(data: Array<CollectionEntry<'blog' | 'note'>>, tag: FrontmatterTag) {
 	return data.filter(post => post.data.tags?.includes(tag))
 }
 
 /**
  * Get all tags, their slug, and the number of posts
  */
-export function getTags(data: Array<CollectionEntry<'blog'>>) {
+export function getTags(data: Array<CollectionEntry<'blog' | 'note'>>) {
 	const output = [] as Array<{ tag: FrontmatterTag, slug: string, count: number }>
 
 	for (const post of data) {
