@@ -1,0 +1,24 @@
+---
+import Icon from './icon.astro'
+---
+
+<button
+	type="button"
+	aria-pressed="false"
+	aria-label="어두운 모드"
+	data-theme-toggle
+	class="flex h-9 w-9 shrink-0 cursor-pointer items-center justify-center rounded-md border border-border hover:text-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+>
+	<Icon name="moon" class="h-4 w-4 dark:hidden" />
+	<Icon name="sun" class="hidden h-4 w-4 dark:block" />
+</button>
+
+<script is:inline>
+	AtmbThemeProvider.updateToggles()
+</script>
+
+<script>
+	document.querySelector('[data-theme-toggle]')?.addEventListener('click', () => {
+		AtmbThemeProvider.toggle()
+	})
+</script>

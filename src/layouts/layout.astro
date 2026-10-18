@@ -1,5 +1,4 @@
 ---
-import { Font } from 'astro:assets'
 import { SITE } from '@constants'
 import SkipNavLink from '@components/a11y/skip-nav-link.astro'
 import Header from '@components/header.astro'
@@ -15,14 +14,16 @@ import '@styles/global.css'
 		<meta name="viewport" content="width=device-width" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<meta name="generator" content={Astro.generator} />
-		<Font cssVariable="--font-plex-sans" preload />
+		<link rel="preload" href="/fonts/PretendardVariable.woff2" as="font" type="font/woff2" crossorigin />
 		<ThemeProvider />
 		<slot name="seo" />
 	</head>
 	<body class="min-h-screen bg-bg text-text">
 		<SkipNavLink />
-		<Header />
-		<slot />
-		<Footer />
+		<div class="container flex w-full flex-col gap-8 py-8 sm:gap-16">
+			<Header />
+			<slot />
+			<Footer />
+		</div>
 	</body>
 </html>

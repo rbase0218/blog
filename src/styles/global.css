@@ -1,16 +1,27 @@
 @import 'tailwindcss';
 @plugin '@tailwindcss/typography';
 
+@font-face {
+	font-family: 'Pretendard';
+	src: url('/fonts/PretendardVariable.woff2') format('woff2');
+	font-weight: 100 900;
+	font-style: normal;
+	font-display: swap;
+}
+
 @theme {
-	--font-sans: var(--font-plex-sans);
+	--font-sans: 'Pretendard';
+	--font-serif: 'Pretendard';
+	--font-mono: 'Pretendard';
 
 	--color-bg: var(--color-gray-50);
 	--color-text: var(--color-gray-700);
 	--color-highlight: var(--color-black);
-	--color-primary: var(--color-blue-600);
+	--color-primary: var(--color-orange-700);
 	--color-subtle: var(--color-gray-600);
 	--color-faded: var(--color-gray-500);
 	--color-border: var(--color-gray-200);
+	--color-divider: var(--color-gray-900);
 
 	--color-ic-bg: var(--color-white);
 	--color-ic-border: var(--color-gray-200);
@@ -22,10 +33,11 @@
 			--color-bg: var(--color-gray-900);
 			--color-text: var(--color-gray-200);
 			--color-highlight: var(--color-white);
-			--color-primary: var(--color-blue-400);
+			--color-primary: var(--color-orange-400);
 			--color-subtle: var(--color-gray-300);
 			--color-faded: var(--color-gray-400);
 			--color-border: var(--color-gray-700);
+			--color-divider: var(--color-gray-50);
 
 			--color-ic-bg: var(--color-gray-700);
 			--color-ic-border: var(--color-gray-600);
@@ -41,18 +53,8 @@
 		padding-inline: 2rem;
 	}
 
-	@media (width >= --theme(--breakpoint-md)) {
-		padding-inline: 2rem;
-	}
-
 	@media (width >= --theme(--breakpoint-lg)) {
 		max-width: var(--container-5xl);
-	}
-
-	@media (width >= --theme(--breakpoint-xl)) {
-	}
-
-	@media (width >= --theme(--breakpoint-2xl)) {
 	}
 }
 
@@ -66,8 +68,30 @@
 
 /* Custom styles */
 
-a.active {
-	color: var(--color-highlight);
+.prose .sp-wrapper {
+	--sp-font-body: 'Pretendard';
+	--sp-font-mono: 'Pretendard';
+}
+
+.category-link:hover,
+.category-link[aria-current='page'] {
+	color: color-mix(in oklch, var(--color-subtle) 85%, black);
+}
+
+.prose {
+	--tw-prose-links: var(--color-primary);
+	--tw-prose-invert-links: var(--color-primary);
+	--tw-prose-hr: var(--color-divider);
+	--tw-prose-invert-hr: var(--color-divider);
+}
+
+figcaption {
+	margin: 0;
+}
+
+.prose :where(ul, li),
+.prose :where(li)::marker {
+	color: var(--color-divider);
 }
 
 #search {
@@ -126,15 +150,4 @@ a.active {
 	fill: currentColor;
 	height: calc(var(--spacing) * 5);
 	width: calc(var(--spacing) * 5);
-}
-
-/* Theme select styling */
-select {
-	background-color: var(--color-bg);
-	color: var(--color-text);
-}
-
-select option {
-	background-color: var(--color-bg);
-	color: var(--color-text);
 }

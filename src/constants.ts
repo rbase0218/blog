@@ -11,19 +11,19 @@ export const SITE: Record<string, string> = {
 	/**
 	 * Site-wide title
 	 */
-	title: 'Minimal Blog',
+	title: 'ryu.write',
 	/**
 	 * Used on index page and as a fallback if no title is set
 	 */
-	titleDefault: 'Astro Theme: Minimal Blog',
+	titleDefault: 'ryu.write',
 	/**
-	 * Used in meta tags, RSS feed, and other places
+	 * Used in meta tags and other places
 	 */
-	description: 'Minimal Astro blog theme with extensive code syntax highlighting capabilities, focus on typography, and clean design bringing your content to the forefront.',
+	description: '다양한 코드 구문 강조와 읽기 편한 글꼴, 깔끔한 디자인으로 콘텐츠에 집중할 수 있는 Astro 블로그 테마입니다.',
 	/**
 	 * Language used in the <html> tag
 	 */
-	lang: 'en-US',
+	lang: 'ko-KR',
 	/**
 	 * Name of the image inside `public` folder that should be used as a default og:image
 	 */
@@ -36,7 +36,6 @@ export const SITE: Record<string, string> = {
 
 interface Header {
 	internal: Array<{ title: string, url: string }>
-	external: Array<{ title: string, url: string, props?: Record<string, unknown> }>
 }
 
 /**
@@ -48,31 +47,12 @@ export const HEADER: Header = {
 	 */
 	internal: [
 		{
-			title: 'Blog',
+			title: 'note',
+			url: '/note/',
+		},
+		{
+			title: 'blog',
 			url: '/blog/',
-		},
-		{
-			title: 'About',
-			url: '/about/',
-		},
-	],
-	/**
-	 * Arbitrary list of links (e.g. social media) shown on the right side of the header
-	 */
-	external: [
-		{
-			title: 'Bluesky',
-			url: 'https://bsky.app/profile/lekoarts.de',
-			props: {
-				target: '_blank',
-			},
-		},
-		{
-			title: 'Homepage',
-			url: 'https://www.lekoarts.de/?utm_source=astro-theme-minimal-blog',
-			props: {
-				target: '_blank',
-			},
 		},
 	],
 }
@@ -82,10 +62,10 @@ export const HEADER: Header = {
  */
 export const FRONTMATTER_TAGS = new Map(
 	[
-		['General', 'general'] as const,
-		['Coding', 'coding'] as const,
+		['일반', 'general'] as const,
+		['개발', 'coding'] as const,
 		['MDX', 'mdx'] as const,
-		['Open Source', 'open-source'] as const,
+		['오픈 소스', 'open-source'] as const,
 		['서울', '서울'] as const,
 	],
 )

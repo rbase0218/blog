@@ -6,14 +6,18 @@ import SkipNavContent from '@components/a11y/skip-nav-content.astro'
 import { defaultDateFormat, sortAsc } from '@utils'
 import Spacer from '@components/spacer.astro'
 import Link from '@components/link.astro'
+import TagLinks from '@components/tag-links.astro'
+import Prose from '@components/prose.astro'
 
 const posts = sortAsc(await getCollection('blog'))
 ---
 
 <Layout>
-	<Seo slot="seo" title="Blog" />
+	<Seo slot="seo" title="blog" />
 	<SkipNavContent>
-		<h1 class="sr-only">Blog</h1>
+		<Prose>
+			<h1 class="mb-8!">blog</h1>
+		</Prose>
 		<div class="flex gap-10 flex-col">
 			{
 				posts.map(({ data: post }) => (
@@ -22,8 +26,9 @@ const posts = sortAsc(await getCollection('blog'))
 							{post.title}
 						</Link>
 						<Spacer axis="vertical" size={2} />
-						<div class="text-faded">
-							{defaultDateFormat(post.date)} — {post.tags.join(', ')}
+						<div class="flex flex-wrap items-center gap-x-3 gap-y-2 text-faded">
+							<span>{defaultDateFormat(post.date)}</span>
+							<TagLinks tags={post.tags} />
 						</div>
 						<Spacer axis="vertical" size={4} />
 						<div class="text-subtle text-md md:text-lg">{post.description}</div>

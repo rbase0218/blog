@@ -54,7 +54,7 @@ export const satteriExternalLinks = defineHastPlugin({
 				type: 'element',
 				tagName: 'span',
 				properties: { className: ['sr-only'] },
-				children: [{ type: 'text', value: ' (opens in a new window)' }],
+				children: [{ type: 'text', value: ' (새 창에서 열림)' }],
 			})
 		},
 	},
@@ -81,7 +81,7 @@ export const satteriHeadingPermalinks = defineHastPlugin({
 						tagName: 'a',
 						properties: {
 							href: `#${id}`,
-							ariaLabel: `Permalink: ${ctx.textContent(node)}`,
+							ariaLabel: `고유 링크: ${ctx.textContent(node)}`,
 							className: ['anchor'],
 						},
 						children: [

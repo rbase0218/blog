@@ -1,6 +1,5 @@
 ---
 import type { AsideType } from '@constants'
-import { capitalize } from '@utils'
 import Icon from './icon.astro'
 
 interface Props {
@@ -9,8 +8,9 @@ interface Props {
 }
 
 const { title: _title, type } = Astro.props
-const capitalizedType = capitalize(type)
-const title = _title === '' ? capitalizedType : _title
+const typeLabels: Record<AsideType, string> = { note: '참고', tip: '도움말', caution: '주의', danger: '위험' }
+const typeLabel = typeLabels[type]
+const title = _title === '' ? typeLabel : _title
 
 const styleVariants: Record<AsideType, { bg: string; accent: string; border: string }> = {
 	note: {
@@ -39,7 +39,7 @@ const svgStyle = 'w-7 h-7 shrink-0 fill-current'
 ---
 
 <aside
-	aria-label={capitalizedType}
+	aria-label={typeLabel}
 	class={`${styleVariants[type].bg} p-4 my-6 rounded-sm border-l-4 ${styleVariants[type].border}`}
 >
 	<p aria-hidden="true" class={`flex gap-4 items-center font-semibold ${styleVariants[type].accent} mt-0!`}>

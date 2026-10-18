@@ -5,7 +5,7 @@ import sitemap from '@astrojs/sitemap'
 import satteriSandpack from '@lekoarts/satteri-sandpack'
 import tailwindcss from '@tailwindcss/vite'
 import expressiveCode from 'astro-expressive-code'
-import { defineConfig, fontProviders } from 'astro/config'
+import { defineConfig } from 'astro/config'
 import { SITE } from './src/constants'
 import { satteriAsides, satteriExternalLinks, satteriHeadingPermalinks } from './src/markdown'
 import { pagefindIntegration } from './src/utils'
@@ -30,15 +30,6 @@ export default defineConfig({
 	devToolbar: {
 		enabled: false,
 	},
-	fonts: [
-		{
-			provider: fontProviders.google(),
-			name: 'IBM Plex Sans',
-			weights: ['400', '500', '600'],
-			subsets: ['latin'],
-			cssVariable: '--font-plex-sans',
-		},
-	],
 	markdown: {
 		processor: satteri({
 			features: { directive: true },

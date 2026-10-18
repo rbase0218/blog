@@ -7,17 +7,17 @@ import sirv from 'sirv'
 import { FRONTMATTER_TAGS } from './constants'
 
 /**
- * Returns a date in the format "MMM DD, YYYY"
+ * 날짜를 한국어 연월일 형식으로 반환합니다.
  */
 export function defaultDateFormat(date: Date): string {
-	return date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })
+	return date.toLocaleDateString('ko-KR', { year: 'numeric', month: 'short', day: 'numeric' })
 }
 
 /**
- * Returns a date in the format "YYYY"
+ * 날짜의 연도를 한국어 형식으로 반환합니다.
  */
 export function yearDateFormat(date: Date): string {
-	return date.toLocaleDateString('en-US', { year: 'numeric' })
+	return date.toLocaleDateString('ko-KR', { year: 'numeric' })
 }
 
 /**
@@ -54,13 +54,6 @@ export function frontmatterToString(data: Record<string, any>): string {
  */
 export function sortAsc(data: Array<CollectionEntry<'blog'>>) {
 	return data.sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime())
-}
-
-/**
- * Capitalize the first letter of a string
- */
-export function capitalize<T extends string>(str: T): Capitalize<T> {
-	return (str.charAt(0).toUpperCase() + str.slice(1)) as Capitalize<T>
 }
 
 /**

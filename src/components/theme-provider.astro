@@ -5,40 +5,51 @@
  * MIT License
  * Copyright (c) 2023 Astro Contributors
  */
-
-import Icon from './icon.astro'
 ---
 
 {/* This is intentionally inlined to avoid FOUC. */}
 <script is:inline>
+	/* eslint-disable style/brace-style -- Astro formats inline scripts with same-line catch blocks. */
 	window.AtmbThemeProvider = (() => {
-		const storedTheme = typeof localStorage !== 'undefined' && localStorage.getItem('atmb-theme')
-		const theme = storedTheme || (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark')
-		document.documentElement.dataset.theme = theme === 'light' ? 'light' : 'dark'
+		const media = window.matchMedia('(prefers-color-scheme: dark)')
+		let preference
+		try {
+			preference = localStorage.getItem('atmb-theme')
+		} catch {
+			// Keep theme switching available when browser storage is blocked.
+		}
+		if (preference !== 'light' && preference !== 'dark') {
+			preference = null
+		}
+
+		const updateToggles = () => {
+			const dark = document.documentElement.dataset.theme === 'dark'
+			document.querySelectorAll('[data-theme-toggle]').forEach((button) => {
+				button.setAttribute('aria-pressed', String(dark))
+			})
+		}
+		const applyTheme = () => {
+			document.documentElement.dataset.theme = preference || (media.matches ? 'dark' : 'light')
+			updateToggles()
+		}
+		applyTheme()
+		media.addEventListener('change', () => {
+			if (!preference) {
+				applyTheme()
+			}
+		})
+
 		return {
-			updatePickers(theme = storedTheme || 'auto') {
-				document.querySelectorAll('atmb-theme-select').forEach((picker) => {
-					const select = picker.querySelector('select')
-					// prettier-ignore
-					if (select)
-select.value = theme
-					/** @type {HTMLTemplateElement | null} */
-					const tmpl = document.querySelector(`#theme-icons`)
-					const newIcon = tmpl && tmpl.content.querySelector(`.${theme}`)
-					if (newIcon) {
-						const oldIcon = picker.querySelector('svg.label-icon')
-						if (oldIcon) {
-							oldIcon.replaceChildren(...newIcon.cloneNode(true).childNodes)
-						}
-					}
-				})
+			updateToggles,
+			toggle() {
+				preference = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark'
+				applyTheme()
+				try {
+					localStorage.setItem('atmb-theme', preference)
+				} catch {
+					// Keep theme switching available when browser storage is blocked.
+				}
 			},
 		}
 	})()
 </script>
-
-<template id="theme-icons">
-	<Icon name="sun" class="light label-icon" />
-	<Icon name="moon" class="dark label-icon" />
-	<Icon name="laptop" class="auto label-icon" />
-</template>

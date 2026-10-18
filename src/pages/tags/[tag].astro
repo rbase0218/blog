@@ -1,6 +1,7 @@
 ---
 import SkipNavContent from '@components/a11y/skip-nav-content.astro'
 import Link from '@components/link.astro'
+import TagLinks from '@components/tag-links.astro'
 import Seo from '@components/seo.astro'
 import Spacer from '@components/spacer.astro'
 import { FRONTMATTER_TAGS } from '@constants'
@@ -39,11 +40,11 @@ const { tagName, postsWithTag } = Astro.props
 ---
 
 <Layout>
-	<Seo slot="seo" title={`Tag: ${tagName}`} />
+	<Seo slot="seo" title={`태그: ${tagName}`} />
 	<SkipNavContent>
-		<div class="border-b border-border pb-4 flex justify-between items-center">
-			<h1 class="font-medium text-xl md:text-2xl lg:text-3xl text-highlight">Tag: {tagName}</h1>
-			<div><Link href="/tags/">See all tags</Link></div>
+		<div class="border-b border-divider pb-4 flex justify-between items-center">
+			<h1 class="font-medium text-[20px] text-highlight">태그: {tagName}</h1>
+			<div><Link href="/tags/">전체 태그 보기</Link></div>
 		</div>
 		<Spacer axis="vertical" size={8} />
 		<div class="flex gap-10 flex-col">
@@ -54,8 +55,9 @@ const { tagName, postsWithTag } = Astro.props
 							{post.title}
 						</Link>
 						<Spacer axis="vertical" size={2} />
-						<div class="text-faded">
-							{defaultDateFormat(post.date)} — {post.tags.join(', ')}
+						<div class="flex flex-wrap items-center gap-x-3 gap-y-2 text-faded">
+							<span>{defaultDateFormat(post.date)}</span>
+							<TagLinks tags={post.tags} />
 						</div>
 					</div>
 				))

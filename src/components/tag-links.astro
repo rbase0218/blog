@@ -9,17 +9,16 @@ interface Props {
 const { tags } = Astro.props
 ---
 
-{
-	tags.map((tag, i) => (
-		<>
+<div role="group" aria-label="태그" class="not-prose flex flex-wrap gap-2">
+	{
+		tags.map((tag) => (
 			<Link
-				class="font-normal no-underline hover:underline!"
+				class="inline-flex items-center rounded-full border border-primary/30 bg-primary/10 px-3 py-1 text-sm font-medium text-primary! no-underline! hover:bg-primary/20 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
 				data-pagefind-filter="tag"
 				href={`/tags/${FRONTMATTER_TAGS.get(tag)}/`}
 			>
 				{tag}
 			</Link>
-			{i < tags.length - 1 && ', '}
-		</>
-	))
-}
+		))
+	}
+</div>

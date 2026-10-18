@@ -2,16 +2,15 @@
 import Layout from '@layouts/layout.astro'
 import Seo from '@components/seo.astro'
 import SkipNavContent from '@components/a11y/skip-nav-content.astro'
-import { Content } from '@assets/about.mdx'
 import Prose from '@components/prose.astro'
 ---
 
 <Layout>
-	<Seo slot="seo" title="About" />
+	<Seo slot="seo" title="note" />
 	<SkipNavContent>
-		<h1 class="sr-only">About</h1>
 		<Prose>
-			<Content />
+			<h1 class="mb-8!">note</h1>
+			<p>아직 작성된 노트가 없습니다.</p>
 		</Prose>
 	</SkipNavContent>
 </Layout>

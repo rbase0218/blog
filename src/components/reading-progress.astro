@@ -1,0 +1,22 @@
+<div
+	data-reading-progress
+	aria-hidden="true"
+	class="pointer-events-none fixed inset-x-0 top-0 z-50 h-1 origin-left bg-primary"
+	style="transform: scaleX(0)"
+>
+</div>
+
+<script>
+	const bar = document.querySelector<HTMLElement>('[data-reading-progress]')
+	if (bar) {
+		const update = () => {
+			const height = document.documentElement.scrollHeight - window.innerHeight
+			const progress = height > 0 ? Math.min(1, Math.max(0, window.scrollY / height)) : 1
+			bar.style.transform = `scaleX(${progress})`
+		}
+		window.addEventListener('scroll', update, { passive: true })
+		window.addEventListener('resize', update)
+		new ResizeObserver(update).observe(document.body)
+		update()
+	}
+</script>

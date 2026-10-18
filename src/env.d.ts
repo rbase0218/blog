@@ -5,5 +5,6 @@ declare namespace astroHTML.JSX {
 }
 
 declare let AtmbThemeProvider: {
-	updatePickers: (theme?: string) => void
+	updateToggles: () => void
+	toggle: () => void
 }

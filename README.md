@@ -1,6 +1,6 @@
-# Astro Theme: Minimal Blog
+# ryu.write
 
-Welcome to **Astro Theme: Minimal Blog**, an ideal option to start sharing your ideas. It's easy to set up and features everything you'd need for a blog.
+Welcome to **ryu.write**, a space for thoughts and things learned. It's easy to set up and features everything you'd need for a blog.
 
 [**Demo Website**](https://astro-theme-minimal-blog.lekoarts.de)
 
@@ -11,8 +11,8 @@ Welcome to **Astro Theme: Minimal Blog**, an ideal option to start sharing your 
 - Code blocks powered by [Expressive Code](https://expressive-code.com/)
 - Custom asides component
 - Live coding powered by [Sandpack](https://github.com/codesandbox/sandpack)
-- RSS, Sitemap
-- Light/Dark/System color mode toggle
+- Sitemap
+- Light/Dark toggle (initially follows the system preference)
 - Add tags to your blog posts
 - [Pagefind](https://pagefind.app/) search
 
@@ -75,7 +75,7 @@ description: A post showcasing the markdown formatting of a post
 date: 2025-02-18
 lastUpdated: 2025-02-18
 tags:
-  - General
+  - 일반
   - MDX
 searchIndex: true
 image: https://absolute-link.google.com/image.png
@@ -103,8 +103,6 @@ Text
 :::
 ```
 
-Read the [Aside Example](./content/blog/2025-04-02--mdx-asides/index.mdx) to learn more.
-
 #### `<Playground>`
 
 ````md
@@ -118,5 +116,3 @@ export default function App() {
 
 </Playground>
 ````
-
-Read the [Playground Example](./content/blog/2025-06-23--live-coding-with-sandpack/index.mdx) to learn more.

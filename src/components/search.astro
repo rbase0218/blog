@@ -15,64 +15,52 @@ if (trailingSlash === 'never') dataAttributes['data-strip-trailing-slash'] = ''
 ---
 
 <site-search class="contents" {...dataAttributes}>
-	<button
-		class="flex items-center sm:border sm:border-border sm:rounded-sm gap-2 sm:py-1 sm:px-3 sm:bg-white sm:dark:bg-black hover:cursor-pointer hover:border-gray-400 dark:hover:border-gray-500"
-		data-open-modal
-		disabled
-		aria-label="Search"
-		aria-keyshortcuts="Control+K"
-	>
-		<Icon name="search" class="w-5 h-5 sm:w-4 sm:h-4" />
-		<span class="hidden sm:block text-faded" aria-hidden="true">Search</span>
-		<kbd
-			class="hidden sm:flex bg-gray-100 dark:bg-gray-800 px-2 rounded-sm gap-1 ml-0 sm:ml-8 md:ml-12"
-			style="display: none;"
+	<form role="search" aria-label="블로그 검색" class="flex min-w-0 items-center gap-2">
+		<input
+			type="search"
+			name="q"
+			aria-label="검색어"
+			class="min-w-0 w-16 sm:w-40 border-0 border-b border-primary bg-transparent px-1 py-1 text-base focus:outline-2 focus:outline-offset-2 focus:outline-primary"
+		/>
+		<button
+			type="submit"
+			class="inline-flex h-9 w-8 sm:w-9 shrink-0 cursor-pointer items-center justify-center text-subtle hover:text-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+			disabled
+			aria-label="검색"
+			aria-keyshortcuts="Control+K Meta+K"
 		>
-			<kbd class="text-sm">Ctrl</kbd><kbd class="text-sm">K</kbd>
-		</kbd>
-	</button>
+			<Icon name="search" class="h-5 w-5" />
+		</button>
+	</form>
 
 	<dialog
-		class="p-0 m-0 w-full h-full max-w-full max-h-full shadow-xl open:flex flex-col backdrop:backdrop-blur-lg backdrop:bg-gray-900/20 border border-gray-300 dark:border-gray-600 sm:w-[90%] sm:max-w-3xl sm:h-max sm:min-h-64 sm:max-h-[calc(100%-8rem)] sm:rounded-lg sm:mt-12 sm:mx-auto bg-gray-100 dark:bg-gray-800"
-		aria-label="Search"
+		class="p-0 m-0 w-full h-full max-w-full max-h-full open:flex flex-col backdrop:bg-black/30 border border-border sm:w-[90%] sm:max-w-2xl sm:h-max sm:min-h-64 sm:max-h-[calc(100%-8rem)] sm:rounded-sm sm:mt-12 sm:mx-auto bg-bg"
+		aria-label="검색"
 	>
 		<div id="dialog-frame" class="relative overflow-auto flex flex-col gap-2 p-4 grow">
 			<button
 				data-close-modal
 				class="flex absolute self-end items-center p-0.5 text-subtle z-10 cursor-pointer sm:hidden"
 			>
-				Cancel
+				닫기
 			</button>
 			<div class="search-container">
 				<div id="search"></div>
 			</div>
 		</div>
 		<div class="hidden sm:block px-4 py-2 bg-gray-50 dark:bg-gray-900 text-faded">
-			<kbd class="text-sm bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded-sm mr-1">Esc</kbd> to close
+			<kbd class="text-sm bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded-sm mr-1">Esc</kbd> 키로 닫기
 		</div>
 	</dialog>
 </site-search>
-
-<script is:inline>
-	/* eslint-disable antfu/if-newline */
-	;(() => {
-		const openBtn = document.querySelector('button[data-open-modal]')
-		const shortcut = openBtn?.querySelector('kbd')
-		if (!openBtn || !(shortcut instanceof HTMLElement)) return
-		const platformKey = shortcut.querySelector('kbd')
-		if (platformKey && /Mac|iPhone|iPod|iPad/i.test(navigator.platform)) {
-			platformKey.textContent = '⌘'
-			openBtn.setAttribute('aria-keyshortcuts', 'Meta+K')
-		}
-		shortcut.style.display = ''
-	})()
-</script>
 
 <script>
 	class SiteSearch extends HTMLElement {
 		constructor() {
 			super()
-			const openBtn = this.querySelector<HTMLButtonElement>('button[data-open-modal]')!
+			const form = this.querySelector('form')!
+			const query = form.querySelector('input')!
+			const submitBtn = form.querySelector('button')!
 			const closeBtn = this.querySelector<HTMLButtonElement>('button[data-close-modal]')!
 			const dialog = this.querySelector('dialog')!
 			const dialogFrame = this.querySelector('#dialog-frame')!
@@ -87,16 +75,22 @@ if (trailingSlash === 'never') dataAttributes['data-strip-trailing-slash'] = ''
 				}
 			}
 
-			const openModal = (event?: MouseEvent) => {
+			let searchUI: { triggerSearch: (term: string) => void } | undefined
+			const openModal = () => {
 				dialog.showModal()
 				document.body.toggleAttribute('data-search-modal-open', true)
-				this.querySelector('input')?.focus()
-				event?.stopPropagation()
+				dialog.querySelector('input')?.focus()
 				window.addEventListener('click', onClick)
 			}
 
-			openBtn.addEventListener('click', openModal)
-			openBtn.disabled = false
+			form.addEventListener('submit', (event) => {
+				event.preventDefault()
+				if (!searchUI) {
+					return
+				}
+				openModal()
+				searchUI.triggerSearch(query.value.trim())
+			})
 			closeBtn.addEventListener('click', closeModal)
 
 			dialog.addEventListener('close', () => {
@@ -121,8 +115,7 @@ if (trailingSlash === 'never') dataAttributes['data-strip-trailing-slash'] = ''
 				onIdle(async () => {
 					// @ts-expect-error — Missing types for @pagefind/default-ui package.
 					const { PagefindUI } = await import('@pagefind/default-ui')
-					// eslint-disable-next-line no-new
-					new PagefindUI({
+					searchUI = new PagefindUI({
 						element: '#search',
 						baseUrl: import.meta.env.BASE_URL,
 						bundlePath: `${import.meta.env.BASE_URL.replace(/\/$/, '')}/pagefind/`,
@@ -138,6 +131,10 @@ if (trailingSlash === 'never') dataAttributes['data-strip-trailing-slash'] = ''
 							})
 						},
 					})
+					submitBtn.disabled = false
+					if (dialog.open) {
+						dialog.querySelector('input')?.focus()
+					}
 				})
 			})
 		}
@@ -159,6 +156,7 @@ if (trailingSlash === 'never') dataAttributes['data-strip-trailing-slash'] = ''
 	}
 
 	:root {
+		--pagefind-ui-font: var(--font-sans);
 		--pagefind-ui-primary: var(--color-primary);
 		--pagefind-ui-text: var(--color-text);
 		--pagefind-ui-background: var(--color-bg);
