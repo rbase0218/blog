@@ -2,6 +2,8 @@ import { satteri, satteriHeadingIdsPlugin } from '@astrojs/markdown-satteri'
 import mdx from '@astrojs/mdx'
 import react from '@astrojs/react'
 import sitemap from '@astrojs/sitemap'
+import vercel from '@astrojs/vercel'
+import keystatic from '@keystatic/astro'
 import satteriSandpack from '@lekoarts/satteri-sandpack'
 import tailwindcss from '@tailwindcss/vite'
 import expressiveCode from 'astro-expressive-code'
@@ -12,9 +14,11 @@ import { pagefindIntegration } from './src/utils'
 
 export default defineConfig({
 	output: 'static',
-	trailingSlash: 'always',
+	adapter: vercel(),
+	// Keystatic calls API routes without a trailing slash.
+	trailingSlash: 'ignore',
 	site: SITE.url,
-	integrations: [expressiveCode(), mdx(), sitemap(), pagefindIntegration(), react()],
+	integrations: [expressiveCode(), mdx(), sitemap(), pagefindIntegration(), react(), keystatic()],
 	vite: {
 		// Sandpack imports these CommonJS packages as ESM, so Vite must prebundle them for development.
 		optimizeDeps: {

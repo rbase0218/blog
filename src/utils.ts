@@ -2,7 +2,6 @@ import type { FrontmatterTag } from '@constants'
 import type { AstroIntegration } from 'astro'
 import type { CollectionEntry } from 'astro:content'
 import path from 'node:path'
-import { fileURLToPath } from 'node:url'
 import sirv from 'sirv'
 import { FRONTMATTER_TAGS } from './constants'
 
@@ -99,18 +98,11 @@ export function getTags(data: Array<CollectionEntry<'blog' | 'note'>>) {
  * Copyright 2022 Sergey Shishkin
  */
 export function pagefindIntegration(): AstroIntegration {
-	let clientDir: string | undefined
-
 	return {
 		name: 'pagefind',
 		hooks: {
-			'astro:config:setup': ({ config }) => {
-				if (config.adapter) {
-					clientDir = fileURLToPath(config.build.client)
-				}
-			},
 			'astro:server:setup': ({ server, logger }) => {
-				const outDir = clientDir ?? path.join(server.config.root, server.config.build.outDir)
+				const outDir = path.join(server.config.root, '.vercel/output/static')
 				logger.debug(`Serving pagefind from ${outDir}`)
 				const serve = sirv(outDir, {
 					dev: true,

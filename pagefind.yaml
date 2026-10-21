@@ -1,2 +1,2 @@
-site: dist
+site: .vercel/output/static
 force_language: ko
